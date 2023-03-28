@@ -1,3 +1,4 @@
+from logging import ERROR
 from time import sleep
 from min import ThreadsafeTransportMINSerialHandler
 from threading import Thread, Event
@@ -19,8 +20,8 @@ class MINMonitor:
     PRINT = 4  # Debug print to the REPL console
     EXCEPTION = 10  # A command failed with an exception; report the exception to the host
 
-    def __init__(self, port="/dev/ttyACM1"):
-        self._min_handler = ThreadsafeTransportMINSerialHandler(port=port)
+    def __init__(self, port="/dev/ttyACM1", loglevel=ERROR):
+        self._min_handler = ThreadsafeTransportMINSerialHandler(port=port, loglevel=loglevel)
         self._thread = None  # Type: Thread
         self._stop_event = Event()
         self._is_stopped = False
