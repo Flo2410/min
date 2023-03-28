@@ -1,9 +1,10 @@
-from logging import ERROR
+from logging import ERROR, getLogger
 from time import sleep
-from min import ThreadsafeTransportMINSerialHandler
+from min import ThreadsafeTransportMINSerialHandler, MINConnectionError
 from threading import Thread, Event
 from queue import Queue, Empty
 
+min_logger = getLogger('min')
 
 class MINMonitor:
     """
@@ -21,9 +22,16 @@ class MINMonitor:
     EXCEPTION = 10  # A command failed with an exception; report the exception to the host
 
     def __init__(self, port="/dev/ttyACM1", loglevel=ERROR):
-        self._min_handler = ThreadsafeTransportMINSerialHandler(port=port, loglevel=loglevel)
-        self._thread = None  # Type: Thread
+        self._port = port
+        self._loglevel = loglevel
+        self._min_handler = None
         self._stop_event = Event()
+        try:
+            self._min_handler = ThreadsafeTransportMINSerialHandler(port=port, loglevel=loglevel)
+        except MINConnectionError:
+            self._reconnect()
+
+        self._thread = None  # Type: Thread
         self._is_stopped = False
         self._recv_messages = Queue()  # Used to pick up messages
         self._filter_messages = {}  # Messages can be redirected into specific queues
@@ -46,6 +54,8 @@ class MINMonitor:
                         else:
                             self._recv_messages.put(msg)
                     sleep(0.0)
+                except IOError:
+                    self._reconnect()
                 except Exception as e:
                     print("Exception: {}".format(e))
                     self._is_stopped = True
@@ -63,6 +73,20 @@ class MINMonitor:
         self._min_handler.transport_reset()
         self._thread = Thread(target=self._thread_fn)
         self._thread.start()
+
+    def _reconnect(self):
+        min_logger.info("Waiting for a connection!")
+        if self._min_handler != None:
+            self._min_handler.close()
+        self._min_handler = None
+
+        while self._min_handler == None and not self._stop_event.is_set():
+            try:
+                self._min_handler = ThreadsafeTransportMINSerialHandler(port=self._port, loglevel=self._loglevel)
+                self._min_handler.transport_reset()
+                min_logger.info("Connected!")
+            except MINConnectionError:
+                pass
 
     def stop(self):
         if not self._is_stopped:
