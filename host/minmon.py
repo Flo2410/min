@@ -12,13 +12,14 @@ class MINMonitor:
     and receive them back. There can be more than one receive queue: the MIN ID can be used
     to put certain messages into their own queues.
     """
+
     PING = 1  # Send back the frame
     IDENTIFY = 2  # Identify this hardware
     STOP = 3  # Stop running the monitor
     PRINT = 4  # Debug print to the REPL console
     EXCEPTION = 10  # A command failed with an exception; report the exception to the host
 
-    def __init__(self, port='/dev/ttyACM1'):
+    def __init__(self, port="/dev/ttyACM1"):
         self._min_handler = ThreadsafeTransportMINSerialHandler(port=port)
         self._thread = None  # Type: Thread
         self._stop_event = Event()
@@ -95,14 +96,14 @@ class MINMonitor:
     def identify(self):
         if self.IDENTIFY not in self._filter_messages.keys():
             self.create_recv_filter(self.IDENTIFY)
-        self.send_frame(self.IDENTIFY, b'hello')
+        self.send_frame(self.IDENTIFY, b"hello")
         reply = self.recv(min_id=self.IDENTIFY)  # Blocks with timeout
         if reply is None:
             return None
         else:
             return reply.payload
 
-    def ping(self, message=b'hello'):
+    def ping(self, message=b"hello"):
         if self.PING not in self._filter_messages.keys():
             self.create_recv_filter(self.PING)
         self.send_frame(self.PING, message)
