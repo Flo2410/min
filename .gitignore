@@ -5,3 +5,5 @@
 *.srec
 *.eep
 *.lss
+
+__pycache__/
