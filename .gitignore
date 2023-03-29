@@ -7,3 +7,4 @@
 *.lss
 
 __pycache__/
+builder/gen.*
