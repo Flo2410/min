@@ -1,6 +1,6 @@
 from logging import ERROR, getLogger
 from time import sleep
-from min import ThreadsafeTransportMINSerialHandler, MINConnectionError
+from min.min import ThreadsafeTransportMINSerialHandler, MINConnectionError
 from threading import Thread, Event
 from queue import Queue, Empty
 
