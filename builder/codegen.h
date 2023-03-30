@@ -2,7 +2,7 @@
 
 /* AUTOMATICALLY GENERATED CODE: DO NOT EDIT DIRECTLY */
 
-#include "../firmware/min/min.h"
+#include "min.h"
 #include <stdint.h>
 
 /* Update bit bytes for frames */
