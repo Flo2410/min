@@ -299,6 +299,7 @@ bool min_queue_frame(struct min_context *self, uint8_t min_id, uint8_t const *pa
     }
     else {
         self->transport_fifo.dropped_frames++;
+        min_debug_print("Cannot queue frame ID=%d, len=%d\n", min_id, payload_len);
         return false;
     }
 }
