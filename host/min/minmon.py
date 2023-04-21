@@ -115,7 +115,7 @@ class MINMonitor:
     def create_recv_filter(self, min_id):
         self._filter_messages[min_id] = Queue()
 
-    def send_frame(self, min_id, min_payload):
+    def send_frame(self, min_id, min_payload = bytes(0)):
         self._send_messages.put(item=(min_id, min_payload))
 
     def identify(self):
