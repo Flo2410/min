@@ -23,6 +23,12 @@ class PayloadBuilder:
             self.__payload.extend(payload)
         pass
 
+    def append_uint(self, num: uint8 | uint16):
+        if num > 0xFF:
+            self.append_uint16(num)
+        else:
+            self.append_uint8(num)
+
     def append_uint8(self, num: uint8):
         self.__payload.append(num)
 
