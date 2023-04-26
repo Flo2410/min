@@ -1,4 +1,4 @@
-from numpy import float32, float64, uint8, frombuffer, int8, uint16, uint32
+from numpy import float32, float64, uint8, frombuffer, int8, uint16, uint32, int16
 import struct
 from collections import deque
 
@@ -7,6 +7,7 @@ c_types = {
     "uint16_t": {"bytes": 2, "dtype": uint16},
     "uint32_t": {"bytes": 4, "dtype": uint32},
     "int8_t": {"bytes": 1, "dtype": int8},
+    "int16_t": {"bytes": 2, "dtype": int16},
     "float": {"bytes": 4, "dtype": float32},
     "double": {"bytes": 8, "dtype": float64}
 }
@@ -34,6 +35,9 @@ class PayloadBuilder:
 
     def append_uint16(self, num: uint16):
         self.__payload.extend(struct.pack('<H', num))
+
+    def append_int16(self, num: int16):
+        self.__payload.extend(struct.pack('<h', num))
 
     def append_float(self, num: float32):
         self.__payload.extend(frombuffer(float32(num).tobytes(), dtype=uint8))
