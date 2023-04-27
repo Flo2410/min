@@ -67,6 +67,8 @@ class MINMonitor:
                     self._min_handler.queue_frame(min_id, min_payload)
                 except Empty:
                     pass
+                except ValueError as e:
+                    print(e)
 
     def _start(self):
         self._stop_event.clear()
