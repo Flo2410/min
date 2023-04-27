@@ -45,6 +45,12 @@ class PayloadBuilder:
     def append_double(self, num: float64):
         self.__payload.extend(frombuffer(float64(num).tobytes(), dtype=uint8))
 
+    def read_string(self):
+        text = ""
+        for _ in range(len(self.__payload)):
+            text += chr(self.__payload.popleft())
+        return text
+
     def read_c_type(self, type_str: str):
         t = c_types[type_str]
         buf: list[uint8] = []
