@@ -5,3 +5,8 @@
 *.srec
 *.eep
 *.lss
+
+__pycache__/
+builder/gen.*
+*.egg-info
+dist/
