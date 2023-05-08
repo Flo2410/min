@@ -1,0 +1,1 @@
+pip install ./dist/min-*.whl --force-reinstall
