@@ -10,7 +10,7 @@ Also, I made the Python package installable via `pip`
     ```bash
     wget https://github.com/Flo2410/min/releases/download/v2.1.1/min-2.1.1-py3-none-any.whl
     ```
-2. Install via `pip install min-*.whl`
+2. Install via `pip3 install min-*.whl`
 
 # Upstream README
 
